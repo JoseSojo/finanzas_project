@@ -10,7 +10,6 @@ import Text from "../atoms/Text";
 import { MoneyFindAllService } from "../../service/MoneyService";
 import { MoneyData } from "../../types/money";
 import CustomCard from "../cards/CustomCard";
-import { it } from "node:test";
 
 interface Props {}
 

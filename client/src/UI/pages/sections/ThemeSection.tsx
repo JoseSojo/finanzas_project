@@ -30,6 +30,7 @@ const MoneySection:FC<Props> = ({}) => {
 
     const HandleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        console.log(updateId);
 
         const ExecuteRequets = async () => {
             if(method === "POST") {

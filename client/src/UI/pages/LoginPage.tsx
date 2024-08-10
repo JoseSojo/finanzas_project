@@ -20,13 +20,9 @@ const LoginPage: FC<Props> = ({}) => {
     const [load, setLoad] = useState(false);
     const [error, setError] = useState<string | boolean>(false);
 
-    const HandleError = (error: string | string[] | any) => {
-        console.log(error);
-    }
-
-    const close = () => {
-        setLoad(false);
-        setError(false);
+    const HandleError = (err: string | string[] | any) => {
+        console.log(err);
+        console.log(load,error);
     }
 
     const SubmitController = (e: FormEvent<HTMLFormElement>) => {
@@ -46,7 +42,8 @@ const LoginPage: FC<Props> = ({}) => {
             setToken(result.token);
             setSession(true);
             setLocation(`/home`);
-            return;
+            return HandleError;
+            
         } 
         ExecuteRequets();
     }
