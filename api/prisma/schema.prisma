@@ -1,0 +1,209 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  previewFeatures = ["relationJoins"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+  
+}
+
+
+model User {
+  id       String        @id         @default(uuid())
+  name     String
+  lastname String
+  password String
+  email    String 
+  username String 
+
+  createAt      DateTime  @default(now())
+  updateAt      DateTime  @updatedAt
+  last_session  DateTime?
+
+  sessions          Session[]
+  notifications     Notification[]
+  transactions      Transaction[]
+
+  money             Money[]
+  pay               PayMethod[]
+  theme             Theme[]
+  yearStatictics    Year[]
+  monthStatictics   Month[]
+}
+
+model Session {
+  id            String        @id         @default(uuid())
+
+  startSession  DateTime
+  endSession    DateTime?
+
+  token         String
+
+  userId        String      
+  userReference User @relation(fields: [userId], references: [id])
+}
+
+model Notification {
+  id                    String        @id         @default(uuid())
+
+  userId                String      
+  dataReference         User        @relation(fields: [userId], references: [id])
+
+  content               String
+  redirect              String      @default("")
+  type                  String
+  by                    String
+  read                  Boolean     @default(false)
+
+  createAt          DateTime    @default(now())
+}
+
+model Money {
+  id          String        @id         @default(uuid())
+  name        String
+
+  mount       Float         @default(0)
+
+  createAt    DateTime      @default(now())
+  updateAt    DateTime      @updatedAt
+
+  propietaryId          String
+  propietaryReference      User        @relation(fields: [propietaryId], references: [id])
+
+  PayMethod   PayMethod[]
+}
+
+model PayMethod {
+  id                String        @id         @default(uuid())
+  name              String
+  description       String
+
+  propietaryId          String
+  propietaryReference      User        @relation(fields: [propietaryId], references: [id])
+
+  moneyId           String    
+  moneyReference    Money     @relation(fields: [moneyId], references: [id])
+
+  mountTransfer     Float     @default(0)
+  mountIngreso      Float     @default(0)
+  mountEgreso       Float     @default(0)
+
+  createAt          DateTime      @default(now())
+  updateAt          DateTime      @updatedAt 
+  transactions      Transaction[] 
+}
+
+model Theme {
+  id                String        @id         @default(uuid()) 
+  type              String        @default("INGRESO")
+  name              String
+  description       String?
+
+  propietaryId             String
+  propietaryReference      User        @relation(fields: [propietaryId], references: [id])
+  
+  transactions      Transaction[]
+}
+
+model Transaction {
+  id                String        @id         @default(uuid()) 
+  date              String
+  themeId           String        
+  themeReference    Theme         @relation(fields: [themeId], references: [id])
+  payId             String        
+  payReference      PayMethod     @relation(fields: [payId], references: [id])
+  userId            String        
+  userReference     User          @relation(fields: [userId], references: [id])
+
+  mount             Int
+
+  createAt          DateTime      @default(now())
+}
+
+model History {
+  id                String        @id         @default(uuid()) 
+  
+  description       String
+
+  createAt          DateTime    @default(now())
+}
+
+// estadisticas
+
+model Month {
+  id                Int        @id         @default(autoincrement())
+
+  year              Int
+  objectType        String     // ingreso / general / monto
+  objectId          String?
+  monthNumber       Int
+  monthName         String
+
+  propietaryId          String
+  propietaryReference   User      @relation(fields: [propietaryId], references: [id])
+
+  totalMonth        Int
+  day1              Int
+  day2              Int
+  day3              Int
+  day4              Int
+  day5              Int
+  day6              Int
+  day7              Int
+  day8              Int
+  day9              Int
+  day10              Int
+  day11              Int
+  day12              Int
+  day13              Int
+  day14              Int
+  day15              Int
+  day16              Int
+  day17              Int
+  day18              Int
+  day19              Int
+  day20              Int
+  day21              Int
+  day22              Int
+  day23              Int
+  day24              Int
+  day25              Int
+  day26              Int
+  day27              Int
+  day28              Int
+  day29              Int
+  day30              Int
+  day31              Int
+}
+
+model Year {
+  id                Int        @id         @default(autoincrement())
+
+  year              Int
+  total             Int
+
+  propietaryId          String
+  propietaryReference   User      @relation(fields: [propietaryId], references: [id])
+
+  totalMonth1       Int
+  totalMonth2       Int
+  totalMonth3       Int
+  totalMonth4       Int
+  totalMonth5       Int
+  totalMonth6       Int
+  totalMonth7       Int
+  totalMonth8       Int
+  totalMonth9       Int
+  totalMonth10      Int
+  totalMonth11      Int
+  totalMonth12      Int
+}
+
