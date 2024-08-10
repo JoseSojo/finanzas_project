@@ -5,7 +5,7 @@ export const KEY_STORAGE = {
     key: `value`,
 }
 
-export const PATH_URL = `http://localhost:3000/api/v1`;
+export const PATH_URL = `https://finanzas-project.onrender.com/api/v1`;
 
 export type ENDPOINTS =
     | "/auth/login"
